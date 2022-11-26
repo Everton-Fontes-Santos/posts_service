@@ -6,3 +6,9 @@ class HealthCheckSchema(BaseModel):
     
 class ErrorSchema(BaseModel):
     message:str = "error"
+    
+class PostSchema(BaseModel):
+    title:str
+    short_text:str
+    content:str
+    author:int

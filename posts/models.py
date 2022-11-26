@@ -7,3 +7,6 @@ class Post(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
     author = models.IntegerField(default=1)
+
+class User(models.Model):
+    pass
