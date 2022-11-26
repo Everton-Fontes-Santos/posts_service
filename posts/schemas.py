@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+from typing import List
 
 class HealthCheckSchema(BaseModel):
     status:str = "ok"
@@ -12,3 +12,4 @@ class PostSchema(BaseModel):
     short_text:str
     content:str
     author:int
+    
