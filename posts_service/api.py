@@ -9,5 +9,5 @@ api.add_router('',router)
 
 @api.exception_handler(ValidationError)
 def custom_validation_errors(request, exc):
-    print(exc.errors)  # <--------------------- !!!!
+    #print(exc.errors)  # <--------------------- !!!!
     return api.create_response(request, ErrorSchema(message='Invalid Data'), status=400)

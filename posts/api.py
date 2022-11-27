@@ -15,7 +15,7 @@ def healtcheck(request:HttpRequest):
     return schemas.HealthCheckSchema()
 
 @router.post('/create', response={201:schemas.PostSchema, 400: schemas.ErrorSchema})
-def create(request, post:schemas.PostSchema):
+def create(request, post:schemas.PostIn):
     new_post = Post.objects.create(**post.dict())
     new_post = schemas.PostSchema(**model_to_dict(new_post))
     return 201, new_post
@@ -40,5 +40,26 @@ def list(request:HttpRequest):
         return 200, response
     
     except Exception as e:
-        print(e)
         return 404, schemas.ErrorSchema(message="Not Found")
+    
+@router.delete('/delete/{int:id}', response={200: schemas.ErrorSchema, 404: schemas.ErrorSchema})
+def delete(request:HttpRequest, id:int):
+    try:
+        post = get_object_or_404(Post, id=id)
+        post.delete()
+        return 200, {
+                "message":"Success"
+            }
+    except Exception as e:
+        return 404, schemas.ErrorSchema(message="Not Found")
+    
+@router.put("/update/{id}", response={200:schemas.PostSchema, 400: schemas.ErrorSchema})
+def update_post(request, id: int, post: schemas.PostIn):
+    try:
+        postU = get_object_or_404(Post, id=id)
+        for attr, value in post.dict().items():
+            setattr(postU, attr, value)
+        postU.save()
+        return 200, postU
+    except Exception as e:
+        return 400, schemas.ErrorSchema(message="Invalid Data")
